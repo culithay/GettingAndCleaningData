@@ -47,7 +47,8 @@ You should create one R script called run_analysis.R that does the following.
 
 Read data from text file
 
-```{x_train_dt <- read.table("./UCI HAR Dataset/train/X_train.txt")}
+``` r
+x_train_dt <- read.table("./UCI HAR Dataset/train/X_train.txt")
 ```
 
 Merge 2 data set
