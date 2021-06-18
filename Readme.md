@@ -53,7 +53,8 @@ x_train_dt <- read.table("./UCI HAR Dataset/train/X_train.txt")
 
 Merge 2 data set
 
-```{x_total_dt <- rbind(x_train_dt, x_test_dt)}
+```r
+x_total_dt <- rbind(x_train_dt, x_test_dt)
 ```
 
 ### Step 2: Extracts only the measurements on the mean and standard deviation for each measurement
@@ -72,12 +73,14 @@ Merge 2 data set
 
 -   Get column indices with grep
 
-```{selected_feature <- feature_names_dt[grep("mean\\(\\)|std\\(\\)",feature_names_dt[,2], ignore.case = FALSE),]}
+```r
+selected_feature <- feature_names_dt[grep("mean\\(\\)|std\\(\\)",feature_names_dt[,2], ignore.case = FALSE),]
 ```
 
 Filter data set with column indices
 
-```{x_total_dt <- x_total_dt[,selected_feature[,1]]}
+```r
+x_total_dt <- x_total_dt[,selected_feature[,1]]
 ```
 
 ### Step 3. Uses descriptive activity names to name the activities in the data set
@@ -100,25 +103,30 @@ Filter data set with column indices
 
 -   Set column name
 
-```{colnames(x_total_dt) <- selected_feature[,2]}
+```r
+colnames(x_total_dt) <- selected_feature[,2]
 ```
 
-```{colnames(y_total_dt) <- "activity"}
+```r
+colnames(y_total_dt) <- "activity"
 ```
 
-```{colnames(subject_total_dt) <- "subject"}
+```r
+colnames(subject_total_dt) <- "subject"
 ```
 
 -   Merge output dataset
 
-```{total_dt <- cbind(subject_total_dt, y_total_dt, x_total_dt)}
+```r
+total_dt <- cbind(subject_total_dt, y_total_dt, x_total_dt)
 ```
 
 ### Step 4. Appropriately labels the data set with descriptive variable names
 
 **Input:**
 
-```{activity_labels_dt <- read.table("./UCI HAR Dataset/activity_labels.txt")}
+```r
+activity_labels_dt <- read.table("./UCI HAR Dataset/activity_labels.txt")
 ```
 
 **Output:**
@@ -129,10 +137,12 @@ Filter data set with column indices
 
 -   Turn activities & subjects into factors
 
-```{total_dt$activity <- factor(total_dt$activity, levels = activity_labels_dt[,1], labels = activity_labels_dt[,2])}
+```r
+total_dt$activity <- factor(total_dt$activity, levels = activity_labels_dt[,1], labels = activity_labels_dt[,2])
 ```
 
-```{total_dt$subject <- as.factor(total_dt$subject)}
+```r
+total_dt$subject <- as.factor(total_dt$subject)
 ```
 
 ### Step 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
@@ -149,10 +159,12 @@ Filter data set with column indices
 
 -   Creates a second, independent tidy data set with the average of each variable for each activity and each subject
 
-```{tidy_dt <- total_dt %>% group_by(activity, subject) %>% summarize_all(funs(mean))}
+```r
+tidy_dt <- total_dt %>% group_by(activity, subject) %>% summarize_all(funs(mean))
 ```
 
 -   Export summary data table
 
-```{write.table(tidy_dt, file = "./tidydata.txt", row.names = FALSE, col.names = TRUE)}
+```r
+write.table(tidy_dt, file = "./tidydata.txt", row.names = FALSE, col.names = TRUE)
 ```
